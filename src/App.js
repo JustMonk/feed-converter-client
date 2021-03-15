@@ -46,6 +46,10 @@ function App() {
                      <FeedCreate />
                   </PrivateRoute>
 
+                  <PrivateRoute exact path="/feed/:id">
+                     <FeedEdit />
+                  </PrivateRoute>
+
                   <PrivateRoute exact path="/">
                      <FeedList />
                   </PrivateRoute>

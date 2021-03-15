@@ -66,13 +66,26 @@ export function FeedList(props) {
       if (!response.ok) return;
 
       const json = await response.json();
-      console.log('feed json: %o', json);
       setFeedList(json);
    };
 
    useEffect(() => {
       getFeedList();
    }, []);
+
+   const editFeed = (id) => {
+      history.push(`/feed/${id}`)
+   }
+
+   const deleteFeed = async (id) => {
+      const token = await auth.getToken();
+      const response = await fetch(config.apiPath + `feed/${id}`, {
+         method: 'DELETE',
+         headers: { 'x-access-token': `${token}` }
+      });
+      if (!response.ok) return;
+      getFeedList();
+   }
 
    return <Layout>
       <h2>Список фидов</h2>
@@ -96,9 +109,9 @@ export function FeedList(props) {
                <div className={classes.linkSubtitle}>{val.url}</div>
                <div className={classes.feedControls}>
                   <Button>Конвертация</Button>
-                  <div style={{display: 'flex'}}>
-                     <Button variant="outlined" style={{ padding: '12px' }}><FaRegEdit /></Button>
-                     <Button variant="outlined" style={{ padding: '12px', marginLeft: '10px' }}><FaTrashAlt /></Button>
+                  <div style={{ display: 'flex' }}>
+                     <Button onClick={() => editFeed(val._id)} variant="outlined" style={{ padding: '12px' }}><FaRegEdit /></Button>
+                     <Button onClick={() => deleteFeed(val._id)} variant="outlined" style={{ padding: '12px', marginLeft: '10px' }}><FaTrashAlt /></Button>
                   </div>
                </div>
             </FeedCard>)}

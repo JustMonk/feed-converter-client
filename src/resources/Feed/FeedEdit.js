@@ -32,7 +32,7 @@ const useStyles = createUseStyles(theme => ({
 export function FeedEdit(props) {
    const classes = useStyles();
    return <Layout>
-      <h2>Конвертация XML-фида в CSV</h2>
+      <h2>Редактирование фида</h2>
       <ReactTooltip place='right' className={classes.tooltip} effect='solid' />
 
       <Label>
