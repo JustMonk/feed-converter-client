@@ -96,8 +96,10 @@ export function FeedList(props) {
                <div className={classes.linkSubtitle}>{val.url}</div>
                <div className={classes.feedControls}>
                   <Button>Конвертация</Button>
-                  <Button variant="outlined" style={{ padding: '12px' }}><FaRegEdit /></Button>
-                  <Button variant="outlined" style={{ padding: '12px' }}><FaTrashAlt /></Button>
+                  <div style={{display: 'flex'}}>
+                     <Button variant="outlined" style={{ padding: '12px' }}><FaRegEdit /></Button>
+                     <Button variant="outlined" style={{ padding: '12px', marginLeft: '10px' }}><FaTrashAlt /></Button>
+                  </div>
                </div>
             </FeedCard>)}
          </div>

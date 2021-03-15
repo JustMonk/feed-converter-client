@@ -9,7 +9,8 @@ const useStyles = createUseStyles(theme => ({
       minWidth: '265px',
       maxWidth: '265px',
       display: 'inline-block',
-      marginBottom: '15px'
+      marginBottom: '15px',
+      height: '100%'
    },
 }));
 
