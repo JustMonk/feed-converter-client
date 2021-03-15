@@ -6,8 +6,8 @@ const useStyles = createUseStyles(theme => ({
       border: '1px solid #e2e2e2',
       borderRadius: '5px',
       padding: '15px',
-      minWidth: '250px',
-      maxWidth: '250px',
+      minWidth: '265px',
+      maxWidth: '265px',
       display: 'inline-block',
       marginBottom: '15px'
    },

@@ -16,6 +16,39 @@ const useStyles = createUseStyles(theme => ({
       color: '#cbd5e0',
       textAlign: 'center'
    },
+   '@keyframes slideTop': {
+      from: {
+         opacity: 0,
+         transform: 'translateY(-10px) scale(1)'
+      },
+      to: {
+         opacity: 1,
+         transform: 'translateY(0px) scale(1)'
+      }
+   },
+   feedWrapper: {
+      animation: '$slideTop ease-in 0.3s',
+   },
+   linkSubtitle: {
+      color: 'grey',
+      fontSize: '0.7em',
+      marginBottom: '10px',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+   },
+   feedTitle: {
+      fontWeight: 'bold',
+      marginBottom: '10px',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      height: '1.2em',
+      whiteSpace: 'nowrap'
+   },
+   feedControls: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+   }
 }));
 
 export function FeedList(props) {
@@ -46,7 +79,7 @@ export function FeedList(props) {
 
       {feedList && feedList.length ? <div><Button color="green" onClick={() => history.push('/feed/create')} style={{ margin: '20px 0px' }}>Создать новый</Button></div> : ''}
 
-      {feedList ? <Fragment>
+      {feedList ? <div className={classes.feedWrapper}>
 
          {!feedList.length ? <div className={classes.emptyCard}>
             <div>
@@ -57,18 +90,19 @@ export function FeedList(props) {
             <Button color="green" onClick={() => history.push('/feed/create')} style={{ margin: '20px auto' }}>Создать новый</Button>
          </div> : ''}
 
-         <div style={{display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap'}}>
+         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
             {feedList.map(val => <FeedCard>
-               <div style={{ fontWeight: 'bold', marginBottom: '10px' }}>{val.name}</div>
-               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Button color="green">Конвертация</Button>
-                  <Button style={{ padding: '15px' }}><FaRegEdit /></Button>
-                  <Button style={{ padding: '15px' }}><FaTrashAlt /></Button>
+               <div className={classes.feedTitle}>{val.name}</div>
+               <div className={classes.linkSubtitle}>{val.url}</div>
+               <div className={classes.feedControls}>
+                  <Button>Конвертация</Button>
+                  <Button variant="outlined" style={{ padding: '12px' }}><FaRegEdit /></Button>
+                  <Button variant="outlined" style={{ padding: '12px' }}><FaTrashAlt /></Button>
                </div>
             </FeedCard>)}
          </div>
 
-      </Fragment> : <LinearProgress />}
+      </div> : <LinearProgress />}
 
    </Layout>
 }
