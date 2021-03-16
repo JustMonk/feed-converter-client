@@ -19,7 +19,7 @@ const useStyles = createUseStyles(theme => ({
    '@keyframes slideTop': {
       from: {
          opacity: 0,
-         transform: 'translateY(-10px) scale(1)'
+         transform: 'translateY(-7px) scale(1)'
       },
       to: {
          opacity: 1,
