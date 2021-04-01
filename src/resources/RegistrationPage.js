@@ -25,23 +25,19 @@ const useStyles = createUseStyles(theme => ({
          transform: 'translateX(0px) scale(1)'
       }
    },
-   wrapper: {
-      //background: '#f7fafc', //#f7fafc
-      maxWidth: '100vw',
-      minHeight: '100vh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      //original fill: #7F7BFB
-      background: `#f7fafc url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 200 200" xml:space="preserve" height="800px" width="800px"><g><path fill="%23C7D2FE" d="M41.3,-52.9C54.4,-47.3,66.6,-36.4,73.8,-22.1C81,-7.8,83.2,10,75.4,21.7C67.7,33.4,50.1,39.1,35.9,47.5C21.7,56,10.8,67.3,0,67.3C-10.8,67.3,-21.6,55.9,-35.7,47.4C-49.9,38.9,-67.3,33.2,-70,23.2C-72.7,13.1,-60.6,-1.3,-53.8,-15.9C-46.9,-30.5,-45.3,-45.3,-37.2,-52.5C-29.1,-59.7,-14.6,-59.4,-0.2,-59.1C14.1,-58.7,28.2,-58.5,41.3,-52.9Z" transform="translate(100 100) scale(1.21)" fill-rule="nonzero"/></g></svg>') 50% no-repeat`,
-   },
    loginCard: {
       animation: '$slideRight ease-in 0.3s',
       boxShadow: '0 2px 20px 3px rgb(0 0 0 / 6%)',
-      background: '#fff',
+      background: theme.background.paper,
+      color: theme.text.primary,
       width: '410px',
       padding: '2rem',
       position: 'relative'
+   },
+   cardHeader: {
+      color: theme.text.activeLink,
+      fontWeight: 600,
+      fontSize: '1.6em'
    }
 }));
 
@@ -85,65 +81,63 @@ export function RegistrationPage(props) {
    }
 
    if (auth.authStatus === 'AUTH_AUTHORIZED') return <Redirect to="/" />
-   return <div className={classes.wrapper}>
-      <div className={classes.loginCard}>
+   return <div className={classes.loginCard}>
 
-         {isLoading ? <GradientOverlay><CircularProgress /></GradientOverlay> : ''}
+      {isLoading ? <GradientOverlay><CircularProgress /></GradientOverlay> : ''}
 
-         <div style={{ display: 'flex', alignItems: 'center', fontWeight: 100, marginBottom: '25px' }}>
-            <FaChessBishop style={{ marginRight: '10px', fontSize: '1.3em', color: '#83afe0' }} />
-            <span>Bishop converter</span>
-         </div>
-
-         <h1 style={{ fontWeight: 600, fontSize: '1.6em', color: '#2B3044' }}>Регистрация</h1>
-
-         {!response ? <Form onSubmit={registrationSubmitHandler}>
-            {formProps => (
-               <form onSubmit={formProps.handleSubmit}>
-
-                  {formProps.submitFailed && Object.values(formProps.errors).length ? <Alert title="Ошибки заполнения:">{Object.values(formProps.errors).map(err => <div>{err}</div>)}</Alert> : ""}
-
-                  <Field name="email" validate={emailValidate}>
-                     {fieldProps => (
-                        <Label>
-                           <span>Эл.почта</span>
-                           <Input {...fieldProps.input} />
-                        </Label>
-                     )
-                     }
-                  </Field>
-
-                  <Field name="password" validate={passwordValidate}>
-                     {fieldProps => (
-                        <Label>
-                           <span>Пароль</span>
-                           <Input type="password" {...fieldProps.input} />
-                        </Label>
-                     )}
-                  </Field>
-
-                  <Field name="passwordRepeat" validate={(val) => !val || formProps.values.password !== val ? 'Пароли не совпадают' : undefined}>
-                     {fieldProps => (
-                        <Label>
-                           <span>Повторите пароль</span>
-                           <Input type="password" {...fieldProps.input} />
-                        </Label>
-                     )}
-                  </Field>
-
-                  <div style={{ marginTop: '10px' }}>
-                     <Button type="submit" fullWidth>Зарегистрироваться</Button>
-                     <Divider />
-                  </div>
-
-               </form>
-            )}
-         </Form> : <Alert type="success">{response}</Alert>
-         }
-
-         <Button fullWidth onClick={backToLogin} color="green" iconLeft={<FaArrowLeft />}>Назад ко входу</Button>
-
+      <div style={{ display: 'flex', alignItems: 'center', fontWeight: 100, marginBottom: '25px' }}>
+         <FaChessBishop style={{ marginRight: '10px', fontSize: '1.3em', color: '#83afe0' }} />
+         <span>Bishop converter</span>
       </div>
+
+      <h1 className={classes.cardHeader}>Регистрация</h1>
+
+      {!response ? <Form onSubmit={registrationSubmitHandler}>
+         {formProps => (
+            <form onSubmit={formProps.handleSubmit}>
+
+               {formProps.submitFailed && Object.values(formProps.errors).length ? <Alert title="Ошибки заполнения:">{Object.values(formProps.errors).map(err => <div>{err}</div>)}</Alert> : ""}
+
+               <Field name="email" validate={emailValidate}>
+                  {fieldProps => (
+                     <Label>
+                        <span>Эл.почта</span>
+                        <Input {...fieldProps.input} />
+                     </Label>
+                  )
+                  }
+               </Field>
+
+               <Field name="password" validate={passwordValidate}>
+                  {fieldProps => (
+                     <Label>
+                        <span>Пароль</span>
+                        <Input type="password" {...fieldProps.input} />
+                     </Label>
+                  )}
+               </Field>
+
+               <Field name="passwordRepeat" validate={(val) => !val || formProps.values.password !== val ? 'Пароли не совпадают' : undefined}>
+                  {fieldProps => (
+                     <Label>
+                        <span>Повторите пароль</span>
+                        <Input type="password" {...fieldProps.input} />
+                     </Label>
+                  )}
+               </Field>
+
+               <div style={{ marginTop: '10px' }}>
+                  <Button type="submit" fullWidth>Зарегистрироваться</Button>
+                  <Divider />
+               </div>
+
+            </form>
+         )}
+      </Form> : <Alert type="success">{response}</Alert>
+      }
+
+      <Button fullWidth onClick={backToLogin} color="green" iconLeft={<FaArrowLeft />}>Назад ко входу</Button>
+
    </div>
 }
 

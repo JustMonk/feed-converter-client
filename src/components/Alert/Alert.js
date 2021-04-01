@@ -17,8 +17,8 @@ const useStyles = createUseStyles(theme => ({
       padding: '20px',
       background: (props) => {
          //default
-         if(!props.type) return '#FFF0F3';
-         if (props.type === 'success') return 'rgba(243,250,247)';
+         if(!props.type) return theme.alert.error;
+         if (props.type === 'success') return theme.alert.success;
       },
       borderLeft: (props) => {
          if (!props.type) return '5px solid #FFB3C0';
@@ -26,7 +26,8 @@ const useStyles = createUseStyles(theme => ({
       },
       borderRadius: '4px',
       fontSize: '.875rem',
-      margin: '10px 0px'
+      margin: '10px 0px',
+      color: theme.text.primary
       //display: 'flex',
       //justifyContent: 'space-between'
    },

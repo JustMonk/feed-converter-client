@@ -1,5 +1,4 @@
-import React from 'react';
-import { Layout } from '../../layout/Layout';
+import React, { Fragment } from 'react';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
 import { Button } from '../../components/Button';
@@ -55,17 +54,14 @@ export function FeedCreate(props) {
       //const data = json.response;
    }
 
-   return <Layout>
+   return <Fragment>
       <h2>Создание нового фида</h2>
+
       <ReactTooltip place='right' className={classes.tooltip} effect='solid' />
 
       <Form onSubmit={feedCreateHandler}>
          {formProps => (
             <form onSubmit={formProps.handleSubmit}>
-
-               <div style={{ margin: '10px 0px', wordBreak: 'break-all', fontFamily: 'monospace' }}>
-                  {JSON.stringify(formProps.values)}
-               </div>
 
                <Field name="name">
                   {fieldProps => (
@@ -143,7 +139,7 @@ export function FeedCreate(props) {
                </Field>
 
                <div style={{ marginTop: '10px', display: 'flex' }}>
-                  <Button>Создать</Button>
+                  <Button type="submit">Создать</Button>
                   <Button variant="outlined" onClick={() => history.push('/')} style={{ marginLeft: '10px' }}>Отмена</Button>
                </div>
 
@@ -151,6 +147,6 @@ export function FeedCreate(props) {
          )}
       </Form>
 
-   </Layout>
+   </Fragment>
 }
 export default FeedCreate;

@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles(theme => ({
    cardWrapper: {
-      border: '1px solid #e2e2e2',
+      border: `1px solid ${theme.border.primary}`,
       borderRadius: '5px',
       padding: '15px',
       minWidth: '265px',

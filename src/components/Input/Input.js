@@ -3,26 +3,18 @@ import { createUseStyles } from 'react-jss'
 
 const useStyles = createUseStyles(theme => ({
    inputMain: {
-      color: '#4a5568',
-      //fontSize: '16px',
+      color: theme.text.input,
       fontSize: '.875rem',
-      //paddingLeft: '1rem',
-      //paddingRight: '1rem',
-      //paddingTop: '.5rem',
-      //paddingBottom: '.5rem',
       padding: '.5rem .75rem',
       lineHeight: '1.5',
       display: 'block',
-      borderWidth: '1px',
-      //borderRadius: '.5rem',
       borderRadius: '.25rem',
       outline: 'none',
-      borderColor: '#e2e8f0',
-      backgroundColor: '#fff',
-      border: '0 solid #e2e8f0',
+      backgroundColor: theme.background.input,
+      border: `1px solid ${theme.border.input}`,
       width: '100%',
       fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji',
-      marginTop: '.5rem', //.5rem
+      marginTop: '.5rem',
       '&:focus': {
          boxShadow: `0 0 0 3px ${theme.colors.primary + '42'}`,
          outlineColor: 'rgba(0,0,0,0)',
@@ -72,6 +64,7 @@ export const Input = (props) => {
          placeholder={props.placeholder}
          onChange={props.onChange}
          value={props.value}
+         checked={props.value}
          type={props.type}
          style={{ ...props.style }}
       >

@@ -22,13 +22,13 @@ const useLinkStyles = createUseStyles(theme => ({
       textDecoration: 'none',
       //borderRadius: '3px',
       borderLeft: `3px solid transparent`,
-      color: 'rgba(113,128,150)',
+      color: theme.text.link,
       '&:hover': {
-         background: '#edf2f7'
+         background: theme.background.linkHover
       }
    },
    activeLink: {
-      color: '#2b3044',
+      color: theme.text.activeLink,
       fontWeight: 'bold',
       //background: '#e3e9ef',
       borderLeft: `3px solid ${theme.colors.primary}`

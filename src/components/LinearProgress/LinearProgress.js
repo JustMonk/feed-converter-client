@@ -13,12 +13,12 @@ const useStyles = createUseStyles(theme => ({
    linearProgress: {
       width: '100%',
       height: '10px',
-      background: '#e6fffa',
+      background: theme.progress.linear,
       overflow: 'hidden',
       position: 'relative'
    },
    bar: {
-      background: '#bde8e0',
+      background: theme.progress.linearBar,
       width: '20%',
       height: '100%',
       position: 'absolute',

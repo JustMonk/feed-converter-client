@@ -18,11 +18,11 @@ const useStyles = createUseStyles(theme => ({
       },
       borderRadius: '.25rem',
       border: (props) => {
-         if (props.variant === 'outlined') return '1px solid #d5d6d7';
+         if (props.variant === 'outlined') return `1px solid ${theme.border.primary}`;
          return 'none';
       },
       color: (props) => {
-         if (props.variant === 'outlined') return '#4c4f52';
+         if (props.variant === 'outlined') return `${theme.text.outlinedButton}`;
          return '#fff'
       },
       fontFamily: 'inherit',

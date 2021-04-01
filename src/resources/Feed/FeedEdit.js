@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Layout } from '../../layout/Layout';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
@@ -12,6 +12,8 @@ import { config } from '../../config';
 import { Form, Field } from 'react-final-form';
 import { useHistory, useParams } from "react-router";
 import { LinearProgress } from '../../components/LinearProgress';
+import { useToastContext, ADD } from "../../contexts/ToastContext";
+import { BiLoaderAlt } from "react-icons/bi";
 
 const useStyles = createUseStyles(theme => ({
    tooptipIcon: {
@@ -31,6 +33,18 @@ const useStyles = createUseStyles(theme => ({
       '&:after': {
          //borderRightColor: '#fff !important'
       }
+   },
+   '@keyframes rotateCircular': {
+      from: {
+         transformOrigin: '50% 50%'
+      },
+      to: {
+         transform: 'rotate(360deg)'
+      }
+   },
+   circularProgress: {
+      fontSize: '16px',
+      animation: '$rotateCircular linear 1.4s infinite',
    }
 }));
 
@@ -40,6 +54,8 @@ export function FeedEdit(props) {
    const history = useHistory();
    let { id } = useParams();
    const [currentFeed, setCurrentFeed] = useState(null);
+   const { toastDispatch } = useToastContext();
+   const [isLoading, setLoading] = useState(false);
 
    const getFeed = async () => {
       const token = await auth.getToken();
@@ -57,21 +73,35 @@ export function FeedEdit(props) {
       getFeed(id);
    }, []);
 
-   const feedEditHandler = (form) => {
-
+   const feedEditHandler = async (form) => {
+      if (isLoading) return;
+      const token = await auth.getToken();
+      setLoading(true);
+      const response = await fetch(config.apiPath + `feed/${id}`, {
+         method: 'PUT',
+         headers: {
+            'authorization': `bearer ${token}`,
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify(form)
+      });
+      if (!response.ok) return;
+      toastDispatch({ type: ADD, payload: { content: { type: "info", message: 'Изменения сохранены' } } });
+      setLoading(false);
+      history.push('/');
    }
 
-   return <Layout>
+
+   return <Fragment>
       <h2>Редактирование фида {currentFeed ? `«${currentFeed.name}»` : '...'}</h2>
+
       <ReactTooltip place='right' className={classes.tooltip} effect='solid' />
 
       {currentFeed ? <Form onSubmit={feedEditHandler} initialValues={currentFeed}>
          {formProps => (
             <form onSubmit={formProps.handleSubmit}>
 
-               <div style={{ margin: '10px 0px', wordBreak: 'break-all', fontFamily: 'monospace' }}>
-                  {JSON.stringify(formProps.values)}
-               </div>
+               <ReactTooltip place='right' className={classes.tooltip} effect='solid' />
 
                <Field name="name">
                   {fieldProps => (
@@ -149,16 +179,14 @@ export function FeedEdit(props) {
                </Field>
 
                <div style={{ marginTop: '10px', display: 'flex' }}>
-                  <Button>Создать</Button>
+                  <Button type="submit">{isLoading ? <BiLoaderAlt className={classes.circularProgress} /> : 'Сохранить'}</Button>
                   <Button variant="outlined" onClick={() => history.push('/')} style={{ marginLeft: '10px' }}>Отмена</Button>
                </div>
 
             </form>
          )}
-      </Form> : <LinearProgress/>}
+      </Form> : <LinearProgress />}
 
-      
-      
-   </Layout>
+   </Fragment>
 }
 export default FeedEdit;

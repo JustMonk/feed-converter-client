@@ -9,7 +9,8 @@ import { LinearProgress } from '../../components/LinearProgress';
 import { useHistory } from "react-router";
 import { FeedCard } from '../../components/FeedCard';
 import { FaRegEdit, FaTrashAlt } from "react-icons/fa";
-
+import { BiLoaderAlt } from "react-icons/bi";
+import { useToastContext, ADD } from "../../contexts/ToastContext";
 
 const useStyles = createUseStyles(theme => ({
    emptyCard: {
@@ -48,6 +49,18 @@ const useStyles = createUseStyles(theme => ({
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center'
+   },
+   '@keyframes rotateCircular': {
+      from: {
+         transformOrigin: '50% 50%'
+      },
+      to: {
+         transform: 'rotate(360deg)'
+      }
+   },
+   circularProgress: {
+      fontSize: '16px',
+      animation: '$rotateCircular linear 1.4s infinite',
    }
 }));
 
@@ -56,6 +69,8 @@ export function FeedList(props) {
    const [feedList, setFeedList] = useState(null);
    const classes = useStyles();
    const history = useHistory();
+   const [isLoading, setLoading] = useState(false);
+   const { toastDispatch } = useToastContext();
 
    const getFeedList = async () => {
       const token = await auth.getToken();
@@ -87,7 +102,34 @@ export function FeedList(props) {
       getFeedList();
    }
 
-   return <Layout>
+   const download_csv = (url) => {
+      let linkElement = document.createElement('a');
+      linkElement.target = '_blank';
+      linkElement.download = `ConvertedFile_${Date.now()}.csv`;
+      linkElement.href = url;
+      linkElement.click();
+   }
+
+   const convertFeed = async (id) => {
+      setLoading(true);
+      const token = await auth.getToken();
+      const response = await fetch(config.apiPath + `feed/${id}/convert`, {
+         method: 'POST',
+         headers: { 'authorization': `bearer ${token}` }
+      });
+      if (!response.ok) return;
+
+      toastDispatch({ type: ADD, payload: { content: { type: "info", message: 'Загрузка файла началась' } } });
+
+      setLoading(false);
+
+      const blob = await response.blob();
+      let file = new Blob([blob], { type: 'text/csv' });
+      const objectURL = URL.createObjectURL(file);
+      download_csv(objectURL);
+   }
+
+   return <Fragment>
       <h2>Список фидов</h2>
 
       {feedList && feedList.length ? <div><Button color="green" onClick={() => history.push('/feed/create')} style={{ margin: '20px 0px' }}>Создать новый</Button></div> : ''}
@@ -104,14 +146,14 @@ export function FeedList(props) {
          </div> : ''}
 
          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-            {feedList.map(val => <FeedCard>
+            {feedList.map(val => <FeedCard key={val.id}>
                <div className={classes.feedTitle}>{val.name}</div>
                <div className={classes.linkSubtitle}>{val.url}</div>
                <div className={classes.feedControls}>
-                  <Button>Конвертация</Button>
+                  <Button onClick={() => isLoading ? null : convertFeed(val.id)}>{isLoading ? <BiLoaderAlt className={classes.circularProgress} /> : 'Конвертация'}</Button>
                   <div style={{ display: 'flex' }}>
-                     <Button onClick={() => editFeed(val._id)} variant="outlined" style={{ padding: '12px' }}><FaRegEdit /></Button>
-                     <Button onClick={() => deleteFeed(val._id)} variant="outlined" style={{ padding: '12px', marginLeft: '10px' }}><FaTrashAlt /></Button>
+                     <Button onClick={() => editFeed(val.id)} variant="outlined" style={{ padding: '12px' }}><FaRegEdit /></Button>
+                     <Button onClick={() => deleteFeed(val.id)} variant="outlined" style={{ padding: '12px', marginLeft: '10px' }}><FaTrashAlt /></Button>
                   </div>
                </div>
             </FeedCard>)}
@@ -119,6 +161,6 @@ export function FeedList(props) {
 
       </div> : <LinearProgress />}
 
-   </Layout>
+   </Fragment>
 }
 export default FeedList;

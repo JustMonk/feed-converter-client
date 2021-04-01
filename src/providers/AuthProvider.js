@@ -2,6 +2,7 @@ import React, { useContext, createContext, useState, useEffect } from "react";
 import { Route, Redirect, useLocation } from "react-router-dom";
 import { config } from '../config';
 import { useHistory } from "react-router";
+import { Layout } from '../layout/Layout';
 
 /** For more details on
  * `authContext`, `ProvideAuth`, `useAuth` and `useProvideAuth`
@@ -86,7 +87,7 @@ function useAuthProvider() {
          const data = json.response;
          saveLocalstorage(data.token, data.tokenExpires, data.refreshToken);
          return response.token;
-      } catch(err) {
+      } catch (err) {
          logout();
       }
    }
@@ -140,7 +141,7 @@ function useAuthProvider() {
       if (authStatus !== AUTH_AUTHORIZED) return;
       getUserData();
    }, [authStatus]);
-   
+
 
    //ВАЖНО! в каждом ответе данные дополнительно завернуты в объект response т.е. получать их надо так: resp.json() => res.response()
    return {
@@ -168,8 +169,8 @@ function AuthButton() {
       </button>
       </p>
    ) : (
-         <p>You are not logged in.</p>
-      );
+      <p>You are not logged in.</p>
+   );
 }
 
 function FullscreenLoader(props) {
@@ -187,9 +188,10 @@ export function PrivateRoute({ children, ...rest }) {
       <Route
          {...rest}
          render={({ location }) =>
-            auth.authStatus === AUTH_AUTHORIZED ? (
-               children
-            ) : (
+            <Layout>
+               {auth.authStatus === AUTH_AUTHORIZED ? (
+                  children
+               ) : (
                   location.pathname !== '/login' ?
                      <Redirect
                         to={{
@@ -197,7 +199,8 @@ export function PrivateRoute({ children, ...rest }) {
                            state: { from: location }
                         }}
                      /> : ''
-               )
+               )}
+            </Layout>
          }
       />
    );
