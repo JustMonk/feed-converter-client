@@ -13,6 +13,7 @@ import { CircularProgress } from '../components/CircularProgress';
 import { GradientOverlay } from '../components/GradientOverlay';
 import { Label } from '../components/Label';
 import { useThemeContext } from '../contexts/ThemeContext';
+import { Dialog } from '../components/Dialog';
 
 const useStyles = createUseStyles(theme => ({
    '@keyframes slideLeft': {
@@ -40,7 +41,8 @@ const useStyles = createUseStyles(theme => ({
       fontSize: '0.9em',
       '&:hover': {
          textDecoration: 'underline'
-      }
+      },
+      cursor: 'pointer'
    },
    cardHeader: {
       color: theme.text.activeLink,
@@ -55,6 +57,7 @@ export function LoginPage(props) {
    const history = useHistory();
    const [isLoading, setLoading] = useState(false);
    const [isLoginError, setLoginError] = useState(false);
+   const [restorePassDialog, setRestoreDialog] = useState(false);
 
    const redirectToRegistration = () => {
       history.push('/registration');
@@ -123,7 +126,20 @@ export function LoginPage(props) {
                   )}
                </Field>
 
-               <a href="#" className={classes.forgotPassLink}>Забыли пароль?</a>
+               <a className={classes.forgotPassLink} onClick={() => setRestoreDialog(true)}>Забыли пароль?</a>
+
+               <Dialog open={restorePassDialog}
+                  onClose={() => setRestoreDialog(false)}
+                  controls={<>
+                     <Button>Подтвердить</Button>
+                     <Button variant="outlined" style={{ marginLeft: '10px' }} onClick={() => setRestoreDialog(false)}>Закрыть</Button>
+                  </>}
+                  content={<>
+                     <h3 style={{ marginTop: '0' }}>Восстановление пароля</h3>
+                     <span style={{ fontSize: '0.9em' }}>Введите адрес электронной почты, на него будет отправлена ссылка для восстановления пароля</span>
+                     <Input placeholder="example@domain.com" fullWidth />
+                  </>}
+               />
 
                <div style={{ marginTop: '10px' }}>
                   <Button type="submit" fullWidth>Войти</Button>
