@@ -146,14 +146,14 @@ export function FeedList(props) {
          </div> : ''}
 
          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-            {feedList.map(val => <FeedCard key={val.id}>
+            {feedList.map(val => <FeedCard key={val._id}>
                <div className={classes.feedTitle}>{val.name}</div>
                <div className={classes.linkSubtitle}>{val.url}</div>
                <div className={classes.feedControls}>
                   <Button onClick={() => isLoading ? null : convertFeed(val.id)}>{isLoading ? <BiLoaderAlt className={classes.circularProgress} /> : 'Конвертация'}</Button>
                   <div style={{ display: 'flex' }}>
-                     <Button onClick={() => editFeed(val.id)} variant="outlined" style={{ padding: '12px' }}><FaRegEdit /></Button>
-                     <Button onClick={() => deleteFeed(val.id)} variant="outlined" style={{ padding: '12px', marginLeft: '10px' }}><FaTrashAlt /></Button>
+                     <Button onClick={() => editFeed(val._id)} variant="outlined" style={{ padding: '12px' }}><FaRegEdit /></Button>
+                     <Button onClick={() => deleteFeed(val._id)} variant="outlined" style={{ padding: '12px', marginLeft: '10px' }}><FaTrashAlt /></Button>
                   </div>
                </div>
             </FeedCard>)}

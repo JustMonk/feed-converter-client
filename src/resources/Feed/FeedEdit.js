@@ -80,7 +80,7 @@ export function FeedEdit(props) {
       const response = await fetch(config.apiPath + `feed/${id}`, {
          method: 'PUT',
          headers: {
-            'authorization': `bearer ${token}`,
+            'x-access-token': `${token}`,
             'Content-Type': 'application/json'
          },
          body: JSON.stringify(form)
