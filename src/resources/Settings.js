@@ -45,7 +45,13 @@ export function Settings() {
          },
          body: JSON.stringify(form)
       });
-      if (!response.ok) return;
+
+      if (!response.ok) {
+         toastDispatch({ type: ADD, payload: { content: { type: "error", message: 'Ошибка при смене электронной почты' } } });
+         setEmailLoading(false);
+         return;
+      } 
+
       const json = await response.json();
       toastDispatch({ type: ADD, payload: { content: { type: "info", message: json.message } } });
       setEmailLoading(false);
@@ -64,7 +70,13 @@ export function Settings() {
          },
          body: JSON.stringify(form)
       });
-      if (!response.ok) return;
+
+      if (!response.ok) {
+         toastDispatch({ type: ADD, payload: { content: { type: "error", message: 'Ошибка при смене пароля' } } });
+         setPassLoading(false);
+         return;
+      } 
+
       const json = await response.json();
       toastDispatch({ type: ADD, payload: { content: { type: "info", message: json.message } } });
       setPassLoading(false);
